@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <div style="width: 100vw; height: 100vh; background: white;" />
+  <div id="batdiv" style="width: 0vw; height: 100vh; background: limegreen;"></div>
+  <p id="batex" style="
+    font-size: 40px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -125%);
+  ">Batre 0%</p>
+  <script>
+    const socket = io('http://localhost:4000')
+
+    let batex = document.getElementById('batex')
+    let batdiv = document.getElementById('batdiv')
+
+    socket.on('connect', () => {
+      socket.emit("register", "battery")
+    })
+    socket.on("setamount", (msg) => {
+      batdiv.style.width = msg + "vw"
+      batex.innerText = "Batre " + msg + "%"
+    })
+  </script>
+</body>
+
+</html>

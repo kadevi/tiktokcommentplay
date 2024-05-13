@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <script>
+    const socket = io('http://localhost:4000')
+
+    socket.on('connect', () => {
+      socket.emit("register", "speaker")
+    })
+    socket.on("speak", (msg) => {
+      let toSpeak = new SpeechSynthesisUtterance()
+      toSpeak.text = msg
+      toSpeak.lang = "id-ID"
+      window.speechSynthesis.speak(toSpeak)
+    })
+  </script>
+</body>
+
+</html>
