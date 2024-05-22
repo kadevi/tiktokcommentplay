@@ -50,7 +50,6 @@
       socket.emit("register", "gbainputviewer")
     })
     socket.on("updateinput", data => {
-      console.log(data)
       const pos = KeyPosition.get(data.key)
       presser.style.left = '' + pos[0] + 'px'
       presser.style.top = '' + pos[1] + 'px'

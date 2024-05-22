@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    const animation = [
+      {left: '100vw'},
+      {left: '-100vw'},
+    ]
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const factor = 30
+    const va = vh - (vw * factor / 100)
+
+    function createImage() {
+      let img = document.createElement('img')
+      img.style = `
+        opacity: 1;
+        position: absolute;
+        left: 100vw;
+        top: 0px;
+        width: ${factor}vw;
+        transform: translate(0, -100%) scaleX(-1);
+      `
+      return img
+    }
+
+    let img0 = createImage()
+    const srcs = [
+      'stud0.png',
+      'stud1.png'
+    ]
+    function get_random(list) {
+      return list[Math.floor((Math.random() * list.length))];
+    }
+
+
+    function fl() {
+      <!-- img0.style.top = `${800 + Math.random() * 700}px` -->
+      img0.src = get_random(srcs)
+      img0.style.top = `${1290}px`
+      document.body.appendChild(img0)
+      let flying = img0.animate(
+        animation,
+        {
+          fill: "both",
+          duration: 10000 + Math.random() * 5000,
+          iteration: 1,
+        }
+      )
+      flying.onfinish = () => {
+        document.body.removeChild(img0)
+        setTimeout(fl, 5000 + Math.random() * 5000)
+      }
+    }
+
+    setTimeout(fl, 5000)
+
+  </script>
+</body>
+
+</html>

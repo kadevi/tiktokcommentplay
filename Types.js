@@ -1,5 +1,5 @@
 /**
-* @typedef {{username: string, imageUrl: string}} TiktokUser
+* @typedef {{id: string, username: string, imageUrl: string}} TiktokUser
 */
 
 module.exports = {

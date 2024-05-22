@@ -7,7 +7,7 @@ const { WebcastPushConnection } = require("tiktok-live-connector")
 
 /**
 * @callback OnLikeCallback
-* @param {{likeCount: string}} data
+* @param {{user: import("./Types").TiktokUser, likeCount: string}} data
 */
 
 /**
@@ -50,6 +50,7 @@ class TiktokConnection {
         {
           chat: data.comment,
           user: {
+            id: data.userId,
             username: data.nickname,
             imageUrl: data.profilePictureUrl
           }
@@ -62,7 +63,16 @@ class TiktokConnection {
   */
   onLike(callback) {
     this.#tiktokLiveConnection.on('like', data => {
-      callback({ likeCount: data.likeCount })
+      callback(
+        {
+          user: {
+            id: data.userId,
+            username: data.nickname,
+            imageUrl: data.profilePictureUrl
+          },
+          likeCount: data.likeCount
+        }
+      )
     })
   }
 

@@ -9,6 +9,7 @@ class UiServer {
   #batterySocket
   #speakerSocket
   #gbaInputViewerSocket
+  #flyAvatarSocket
   #socketIo = new Server(this.#httpServer, {
     cors: {
       origin: '*'
@@ -42,6 +43,14 @@ class UiServer {
             socket.on('disconnect', () => {
               console.info("GBA input viewer socket disconnected")
               this.#gbaInputViewerSocket = undefined
+            })
+            break
+          case "flyavatar":
+            console.info("Fly avatar socket registered")
+            this.#flyAvatarSocket = socket
+            socket.on('disconnect', () => {
+              console.info("Fly avatar socket disconnected")
+              this.#flyAvatarSocket = undefined
             })
             break
         }
@@ -81,6 +90,21 @@ class UiServer {
         isPress: isPress,
         imageUrl: imageUrl
       })
+  }
+
+  /**
+  * @param {'like'|'gift'} type
+  * @param {string} imageUrl
+  */
+  flyAvatar(type, imageUrl) {
+    if (this.#flyAvatarSocket === undefined) return
+    this.#flyAvatarSocket.emit(
+      "fly",
+      {
+        type: type,
+        imageUrl: imageUrl,
+      }
+    )
   }
 }
 

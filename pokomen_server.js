@@ -24,6 +24,7 @@ function onChatCallback(data) {
 
 /** @type { import("./TiktokConnection").OnLikeCallback } */
 function onLikeCallback(data) {
+  uiServer.flyAvatar('like', data.user.imageUrl)
   battery += data.likeCount / 2
   if (battery >= 100) battery = 101
   tickBattery()
@@ -55,13 +56,20 @@ rl.on('line', line => {
   const lineSep = line.split(";")
   if (lineSep.length !== 2) return
   const [command, text] = lineSep
+  let user = {
+    id: "k...dev",
+    username: "KDV",
+    imageUrl: "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/e6d990c727767fbc4cfb69d05976a732~c5_100x100.jpeg?lk3s=a5d48078&nonce=63711&refresh_token=845b9ec06a7205a239234d1414346113&x-expires=1716076800&x-signature=zwb4mGo9%2FV2uE8dGOqUGE8kGEas%3D&shp=a5d48078&shcp=81f88b70"
+  }
   if (command === 'chat') {
     onChatCallback({
-      user: {
-        username: "k...dev",
-        imageUrl: "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/e6d990c727767fbc4cfb69d05976a732~c5_100x100.jpeg?lk3s=30310797&x-expires=1715616000&x-signature=HGtWzJdrWcp0ZgkDpQbWzM8U6yk%3D"
-      },
+      user: user,
       chat: text
+    })
+  } else if (command === 'like') {
+    onLikeCallback({
+      user: user,
+      likeCount: parseInt(text)
     })
   } else if (command === 'connect' && text === 'tiktok') {
     tiktokConnection.connect()
